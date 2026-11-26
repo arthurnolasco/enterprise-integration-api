@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="vendor/autoload.php" colors="true">
+  <testsuites><testsuite name="Feature"><directory>tests/Feature</directory></testsuite></testsuites>
+  <php>
+    <env name="APP_ENV" value="testing" force="true"/>
+    <env name="DB_CONNECTION" value="sqlite" force="true"/>
+    <env name="DB_DATABASE" value=":memory:" force="true"/>
+    <env name="CACHE_STORE" value="array" force="true"/>
+    <env name="QUEUE_CONNECTION" value="sync" force="true"/>
+    <env name="SOURCE_URL" value="http://source.test" force="true"/>
+    <env name="DESTINATION_URL" value="http://destination.test" force="true"/>
+    <!-- Laravel reads $_SERVER first; Docker env_file values land there, so override them too. -->
+    <server name="APP_ENV" value="testing" force="true"/>
+    <server name="DB_CONNECTION" value="sqlite" force="true"/>
+    <server name="DB_DATABASE" value=":memory:" force="true"/>
+    <server name="CACHE_STORE" value="array" force="true"/>
+    <server name="QUEUE_CONNECTION" value="sync" force="true"/>
+    <server name="SOURCE_URL" value="http://source.test" force="true"/>
+    <server name="DESTINATION_URL" value="http://destination.test" force="true"/>
+  </php>
+</phpunit>
