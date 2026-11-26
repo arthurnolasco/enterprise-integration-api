@@ -1,0 +1,33 @@
+services:
+  api:
+    build: .
+    env_file: .env
+    environment:
+      DB_DATABASE: /app/data/database.sqlite
+    volumes:
+      - db:/app/data
+    ports:
+      - "127.0.0.1:8000:8000"
+    command: sh -c 'touch /app/data/database.sqlite && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000'
+    depends_on:
+      - mock
+  worker:
+    build: .
+    env_file: .env
+    environment:
+      DB_DATABASE: /app/data/database.sqlite
+    volumes:
+      - db:/app/data
+    command: sh -c 'until php artisan migrate:status >/dev/null 2>&1; do sleep 2; done; php artisan queue:work --queue=integration --sleep=2 --timeout=30 --tries=3'
+    depends_on:
+      - api
+  mock:
+    build: .
+    environment:
+      MOCK_STATE: /state/work-items.json
+    volumes:
+      - mock-state:/state
+    command: php -S 0.0.0.0:8080 mock/router.php
+volumes:
+  db:
+  mock-state:
